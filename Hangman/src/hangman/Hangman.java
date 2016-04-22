@@ -14,10 +14,14 @@ import java.util.Scanner;
 
 public class Hangman {
 
-    static String randomWord;
-    char[] charArray = randomWord.toCharArray();
-    int count = 10; //Each game you get 10 tries to guess the word
+    private static final char HIDECHAR = '_';
+    static String randomWord, preGuess;
+    static char guess;
+    static char[] charArray = randomWord.toCharArray();
+    static String hidden = createHidden();
+    static int count = 10; //Each game you get 10 tries to guess the word
     char[] guesses = new char[26];
+    static boolean solved = false;
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
@@ -28,11 +32,40 @@ public class Hangman {
         System.out.println("//////////////////////////////"
                 + "\n///// WELCOME TO HANGMAN /////"
                 + "\n//////////////////////////////");
-        
-        System.out.println("Word length: " + randomWord.length());
-        
+        do {
+            System.out.println("Word length: " + randomWord.length());
+            //Write code to display _ _ _ _ _ instead of letters, reveal once guessed right
+            System.out.println("What is your guess?> ");
+            preGuess = console.nextLine();
+            guess = preGuess.charAt(0);
+            if(!contains(charArray, guess)){ //Scans the random word, if letter not contained, lose a life
+                count--;
+                if(count == 0){
+                    System.out.println("Game over! Thanks for playing!");
+                    System.exit(0);
+                }
+            } else {
+                
+            }
+        } while (!solved);
     }
-
+    
+    private static String createHidden() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < randomWord.length(); i++) {
+            sb.append(HIDECHAR);
+        }
+        return sb.toString();
+    }
+    
+    public static boolean contains(char[] randomWord, char input){
+        int j = 0;
+        while(randomWord[j] != input){
+            j++;
+        }
+        return(randomWord[j]==input);
+    }
+    
     private static void sendGet() throws Exception {
         String url = "http://randomword.setgetgo.com/get.php";
 
